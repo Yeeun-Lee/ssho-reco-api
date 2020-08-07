@@ -1,4 +1,5 @@
 import numpy as np
+import pickle
 from model import FactorizationMachine
 from train import run_model
 
@@ -15,6 +16,8 @@ y = np.array([5, 3, 1, 4, 5, 1, 5], dtype=np.float32)
 model = FactorizationMachine(data_shape=16, latent_shape=10)
 
 trained = run_model(model, x, y, epochs=200)
+
+pickle.dump(trained, open("FM.model", "wb"))
 
 
 

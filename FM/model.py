@@ -13,7 +13,7 @@ class FactorizationMachine:
          - Requires manual specification of feature space dimensionality.
          - Coefficients are all float64. Might be overkill but it simplifies casting.
 
-        :param m: Number of features.
+        :param m: Number of features. (one-hot encoded vector shape)
         :param k: Number of latent factors to model in V.
         """
         self.b = tf.Variable(tf.zeros([1],

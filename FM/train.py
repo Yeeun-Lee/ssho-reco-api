@@ -4,7 +4,7 @@ import numpy as np
 def l2_loss(y_true, y_pred):
     return tf.sqrt(tf.reduce_mean(tf.square(y_true - y_pred)))
 
-def train_step(mod, x, y_true, lr,
+def train_step(mod, x, y_true, lr=0.001,
                loss_f = l2_loss):
     # Calculate current loss and record gradients
     with tf.GradientTape() as t:
