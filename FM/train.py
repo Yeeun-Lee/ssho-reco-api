@@ -2,7 +2,7 @@ import tensorflow as tf
 import numpy as np
 
 def l2_loss(y_true, y_pred):
-    return tf.reduce_mean(tf.square(y_true - y_pred))
+    return tf.sqrt(tf.reduce_mean(tf.square(y_true - y_pred)))
 
 def train_step(mod, x, y_true, lr,
                loss_f = l2_loss):
