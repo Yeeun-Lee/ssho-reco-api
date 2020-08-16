@@ -10,7 +10,7 @@ dict_rate = {0: [1, 0, 0, 1, 3],
              5: [5, 1, 5, 4, 0],
              6: [0, 0, 0, 1, 0], }
 
-    # P, Q is (7 X k), (k X 5) matrix
+# P, Q is (7 X k), (k X 5) matrix
 factorizer = MF(dict_rate, latent=3, lr=0.01, reg_param=0.01, epochs=300, verbose=True)
 factorizer.fit()
 factorizer.print_results()
