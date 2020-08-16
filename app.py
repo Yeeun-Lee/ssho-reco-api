@@ -41,4 +41,4 @@ def test():
 
 if __name__ == "__main__":
     # Run Flask Server
-    app.run(host=flask_host, port=flask_port, debug=True)
+    app.run()
