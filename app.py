@@ -15,7 +15,7 @@ flask_host = "0.0.0.0"
 flask_port = "5000"
 
 @app.route("/reco/mf", methods=['POST'])
-def test():
+def get_reco_item_mf():
     req_body = request.get_json()
     res_body = []
     item_list = req_body['itemList']
@@ -41,4 +41,4 @@ def test():
 
 if __name__ == "__main__":
     # Run Flask Server
-    app.run()
+    app.run(host=flask_host, port=flask_port)
