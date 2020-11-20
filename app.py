@@ -18,7 +18,7 @@ flask_port = "5000"
 def get_reco_item_mf():
     req_body = request.get_json()
     res_body = []
-    item_list = req_body['itemList']
+    item_id_list = req_body['itemIdList']
     user_swipe_score_list = req_body['userSwipeScoreList']
 
     dict_rate = {}
@@ -34,7 +34,7 @@ def get_reco_item_mf():
     factorizer.print_results()
     for key, rates in factorizer.estimated():
         sorted_idx = np.argsort(rates)
-        user_item = {"userId": str(key), "itemList": [item_list[x] for x in sorted_idx[:3]]}
+        user_item = {"userId": str(key), "itemIdList": [item_id_list[x] for x in sorted_idx]}
         res_body.append(user_item)
 
     return jsonify(res_body)

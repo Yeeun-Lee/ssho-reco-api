@@ -1,0 +1,24 @@
+{
+  "name": "ssho-reco-api",
+  "version": "1.0.0",
+  "description": ">numpy : 1.18.5\r >input : dictionary, key = user.id, value = user.rating\r >고정된 item list를 가정했을 때, main.py에서 ['item1' ~ 'item7']에서 상위 rating^ 가진 아이템 3개 반환",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ssho-lab/ssho-reco-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ssho-lab/ssho-reco-api/issues"
+  },
+  "homepage": "https://github.com/ssho-lab/ssho-reco-api#readme",
+  "devDependencies": {
+    "serverless-python-requirements": "^5.1.0",
+    "serverless-wsgi": "^1.7.6"
+  }
+}
