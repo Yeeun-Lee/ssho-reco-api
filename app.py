@@ -33,8 +33,12 @@ def get_reco_item_mf():
     factorizer.fit()
     factorizer.print_results()
     for key, rates in factorizer.estimated():
-        sorted_idx = np.argsort(rates)
-        user_item = {"userId": str(key), "mallNoList": [mall_no_list[x] for x in sorted_idx]}
+        sorted_idx = np.argsort(-rates)
+        user_item = {
+            "userId": str(key),
+            "mallNoList": [mall_no_list[x] for x in sorted_idx],
+            "mallRateList": rates.tolist()
+        }
         res_body.append(user_item)
 
     return jsonify(res_body)
