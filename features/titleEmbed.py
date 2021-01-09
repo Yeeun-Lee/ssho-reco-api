@@ -5,6 +5,8 @@ import io
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from gensim.models.callbacks import CallbackAny2Vec
 
+
+
 from features.translation import finalItems
 
 
@@ -22,10 +24,14 @@ class EpochLogger(CallbackAny2Vec):
         self.epoch += 1
 
 class TitleEmbeding():
-    def __init__(self, file = None, embed_size = 3, epochs = 30, alpha = 0.025, min_alpha = 0.025, verbose = False):
+    def __init__(self, file = None, embed_size = 4, epochs = 40, alpha = 0.025, min_alpha = 0.025, verbose = False):
         self.embed_size = embed_size
-        self.items = finalItems(file)
-
+        if file == None:
+            self.items = finalItems(file)
+        else:
+            with open(file, "r") as f:
+                self.items = json.load(f)
+        print(self.items[1])
         # model parameters
         self.alpha = alpha
         self.min_alpha = min_alpha
@@ -76,8 +82,9 @@ class TitleEmbeding():
 
 
 if __name__=="__main__":
-    vectorizer = TitleEmbeding()
+    vectorizer = TitleEmbeding(file = "translated_210109.json")
     vectorizer.train() # 학습
+
     # model save
     vectorizer.save()
 
