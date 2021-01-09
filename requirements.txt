@@ -1,3 +1,7 @@
 flask
 numpy
 gunicorn
+google_trans_new
+opencv-python
+gensim
+io
