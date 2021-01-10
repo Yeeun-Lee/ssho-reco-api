@@ -46,7 +46,7 @@ def cleanTitle(text):
     return text
 
 def transItem(item):
-    item['translated'] = toEng(cleanTitle(item['title']))
+    item['engTitle'] = toEng(cleanTitle(item['title']))
     return item
 
 # def finalItems(file = None):
