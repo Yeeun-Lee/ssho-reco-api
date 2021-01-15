@@ -12,12 +12,13 @@ from tensorflow.keras.regularizers import l2
 IMG_SIZE = 128
 
 def convertImg(url):
-    return Image.open(urlopen(url)).convert("RGB")
+    return np.array(Image.open(urlopen(url)).convert("RGB"))
 
 def processImg(url):
-
     try:
-        img = convertImg(url)
+        img = cv2.cvtColor(convertImg(url), cv2.COLOR_BGR2RGB)
+        # PIL은 RGB 순서대로 표기하고, cv2는 BGR 순서대로 표기함.
+        # 시각화 하려면 다시 RGB로 변환하는 프로세스 추가
         img = cv2.resize(img, dsize = (IMG_SIZE, IMG_SIZE),
                          interpolation=cv2.INTER_AREA)
         return img
