@@ -13,6 +13,6 @@ def centroidVec(vec, mode = "mean"):
     :return: n-dimensional centroid vector
     """
     if mode == "median":
-        return np.median(vec)
+        return np.median(vec, axis = 0)
     else:
-        return np.mean(vec)
+        return np.mean(vec, axis = 0)
