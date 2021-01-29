@@ -5,7 +5,10 @@
 
 from flask import Flask, request, jsonify
 import numpy as np
+
+from features.translation import transItem
 from models._MF import MF
+from features.kerasEncoder import imgToVec
 
 # Flask Endpoint 설정
 app = Flask(__name__)
@@ -41,6 +44,23 @@ def get_reco_item_mf():
         }
         res_body.append(user_item)
 
+    return jsonify(res_body)
+
+
+@app.route("/feature/title/translation", methods=['POST'])
+def get_title_translation():
+    req_body = request.get_json()
+    res_body = {
+        "engTitle": transItem(req_body['title'])
+    }
+    return jsonify(res_body)
+
+@app.route("/feature/image", methods=['POST'])
+def get_image_feature():
+    req_body = request.get_json()
+    res_body = {
+        "imageVec": imgToVec(req_body['imageUrl'])
+    }
     return jsonify(res_body)
 
 if __name__ == "__main__":

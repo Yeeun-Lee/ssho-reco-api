@@ -8,6 +8,8 @@ from tensorflow.keras.layers import Flatten
 from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
 
+from itertools import chain
+
 
 IMG_SIZE = 128
 
@@ -48,8 +50,8 @@ def imgToVec(url):
     img = np.expand_dims(img, axis = 0)
     _, encoder = Encoder()
 
-    return encoder.predict(img/255)
+    return list(chain.from_iterable(encoder.predict(img/255).tolist()))
 
 if __name__=="__main__":
     # sample image url(imageUrl)
-    vec = imgToVec('https://akamai.poxo.com/nandaglobal/nandaglobal.cafe24.com/web/product/tiny/202101/64c10421a8068800cab01977ab0332ca.webp')
+    vec = imgToVec('https://thomasmore.co.kr/web/product/medium/202011/b650d3bcb681446745322fd9a939b32f.jpg')

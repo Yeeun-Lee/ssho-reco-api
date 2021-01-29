@@ -7,6 +7,7 @@ RUN apt-get update
 RUN apt-get install -y --no-install-recommends python3.6 python3.6-dev python3-pip python3-setuptools python3-wheel gcc
 RUN apt-get install -y git
 RUN apt-get install -y libsm6 libxext6 libxrender-dev
+RUN apt-get install -y libgl1-mesa-glx
 
 COPY . /app
 WORKDIR /app

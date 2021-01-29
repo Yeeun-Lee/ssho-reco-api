@@ -1,4 +1,3 @@
-import pandas as pd
 import requests
 # import json
 # import time
@@ -45,9 +44,8 @@ def cleanTitle(text):
     text = re.sub(r"[^\w\s]", "", text)
     return text
 
-def transItem(item):
-    item['engTitle'] = toEng(cleanTitle(item['title']))
-    return item
+def transItem(title):
+    return toEng(cleanTitle(title))
 
 # def finalItems(file = None):
 #     date = str(datetime.now().strftime("%y%m%d"))

@@ -1,3 +1,4 @@
+"""
 from datetime import datetime
 import json
 import io
@@ -93,3 +94,4 @@ if __name__=="__main__":
 
     # tsv파일 저장(tensorboard embedding 에 시각화 하기 위한 파일)
     vectorizer.save_tsv()
+"""
