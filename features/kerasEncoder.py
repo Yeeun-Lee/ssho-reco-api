@@ -14,7 +14,11 @@ from itertools import chain
 IMG_SIZE = 128
 
 def convertImg(url):
-    return np.array(Image.open(urlopen(url)).convert("RGB"))
+    img = Image.open(urlopen(url)).convert("RGB")
+    # save temporarily
+    img.save("temp.jpeg")
+    img = np.array(Image.open("temp.jpg", "jpeg"))
+    return img
 
 def processImg(url):
     try:
@@ -48,10 +52,12 @@ def Encoder():
 def imgToVec(url):
     img = processImg(url)
     img = np.expand_dims(img, axis = 0)
+    print(img.shape)
     _, encoder = Encoder()
 
     return list(chain.from_iterable(encoder.predict(img/255).tolist()))
 
 if __name__=="__main__":
     # sample image url(imageUrl)
-    vec = imgToVec('https://thomasmore.co.kr/web/product/medium/202011/b650d3bcb681446745322fd9a939b32f.jpg')
+    vec = imgToVec('https://www.stylenanda.com/web/product/tiny/20200403/87c1d5150cc2239d128836f6ec19811f.webp')
+    print(vec)
