@@ -5,6 +5,7 @@
 
 from flask import Flask, request, jsonify
 import numpy as np
+import math
 
 from features.translation import transItem
 from models._MF import MF
@@ -40,7 +41,7 @@ def get_reco_item_mf():
         user_item = {
             "userId": str(key),
             "mallNoList": [mall_no_list[x] for x in sorted_idx],
-            "mallRateList": rates.tolist()
+            "mallRateList": [0.0 if math.isnan(i) else i for i in rates.tolist()]
         }
         res_body.append(user_item)
 
