@@ -25,7 +25,7 @@ class MF():
         :param epochs: training epochs
         :param verbose: status
         """
-        self._rate = np.array([x for x in table.values()])
+        self._rate = np.nan_to_num(np.array([x for x in table.values()]))
         self._ids = [x for x in table.keys()]
         self._num_users, self._num_items = self._rate.shape
         self._latent = latent
@@ -162,3 +162,14 @@ class MF():
     def estimated(self):
         return zip(self._ids, self.get_complete_matrix())
 
+if __name__=="__main__":
+    dict_rate = {0: [1, np.nan, np.nan, 1, 3],
+                 1: [2, np.nan, 3, 1, 1],
+                 2: [1, 2, 0, 5, 0],
+                 3: [1, 0, 0, 4, 4],
+                 4: [2, 1, 5, 4, 0],
+                 5: [5, 1, 5, 4, 0],
+                 6: [0, 0, 0, 1, 0], }
+    factorizer = MF(dict_rate, latent=3, lr=0.01, reg_param=0.01, epochs=300, verbose=True)
+    factorizer.fit()
+    factorizer.print_results()
