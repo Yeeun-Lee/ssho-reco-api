@@ -2,6 +2,7 @@ import numpy as np
 from PIL import Image
 import cv2
 from urllib.request import urlopen
+from io import BytesIO
 
 from tensorflow.keras.layers import Dense, Conv2D, MaxPool2D, Input
 from tensorflow.keras.layers import Flatten
@@ -16,8 +17,9 @@ IMG_SIZE = 128
 def convertImg(url):
     img = Image.open(urlopen(url)).convert("RGB")
     # save temporarily
-    img.save("temp.jpeg")
-    img = np.array(Image.open("temp.jpg", "jpeg"))
+    temp_byte = BytesIO()
+    img.save(temp_byte, "jpeg")
+    img = np.array(Image.open(temp_byte).convert("RGB"))
     return img
 
 def processImg(url):
