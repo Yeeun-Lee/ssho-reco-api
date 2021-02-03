@@ -14,13 +14,20 @@ from itertools import chain
 
 IMG_SIZE = 128
 
+#def convertImg(url):
+#     img = Image.open(urlopen(url))
+#     # save temporarily
+#     temp_byte = BytesIO()
+#     img.convert("RGB").save(temp_byte, "jpeg")
+#     img = Image.open(temp_byte)
+#     return np.array(img)
+
 def convertImg(url):
-    img = Image.open(urlopen(url)).convert("RGB")
-    # save temporarily
-    temp_byte = BytesIO()
-    img.save(temp_byte, "jpeg")
-    img = np.array(Image.open(temp_byte).convert("RGB"))
-    return img
+    img = Image.open(urlopen(url))
+    if img.is_animated:
+        img.seek(img.tell()+0) # 사용할 대표 이미지의 인덱스
+    img.show()
+    return np.array(img.convert("RGB"))
 
 def processImg(url):
     try:
@@ -61,5 +68,5 @@ def imgToVec(url):
 
 if __name__=="__main__":
     # sample image url(imageUrl)
-    vec = imgToVec('https://www.stylenanda.com/web/product/tiny/20200403/87c1d5150cc2239d128836f6ec19811f.webp')
+    vec = imgToVec('https://www.stylenanda.com/web/product/tiny/20200413/3342a9562d07513347ddc4ac7ed9fd7d.webp')
     print(vec)
