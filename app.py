@@ -7,6 +7,7 @@ from flask import Flask, request, jsonify
 import numpy as np
 import math
 
+from features.distance import centroidVec, cos_sim
 from features.translation import transItem
 from models._MF import MF
 from features.kerasEncoder import imgToVec
@@ -62,6 +63,26 @@ def get_image_feature():
     res_body = {
         "imageVec": imgToVec(req_body['imageUrl'])
     }
+    return jsonify(res_body)
+
+@app.route("/feature/distance", methods=['POST'])
+def get_feature_distance():
+    req_body = request.get_json()
+    recent_item_image_vec_list = list(map(lambda x: x['imageVec'], req_body['recentItemList']))
+    item_list = req_body['itemList']
+    represent_vec = centroidVec(recent_item_image_vec_list)
+
+    item_rate_list = []
+    for item in item_list:
+        item_image_vec = item['imageVec']
+        similarity = cos_sim(item_image_vec, represent_vec)
+        item_rate_list.append(similarity)
+
+    item_rate_list = np.nan_to_num(item_rate_list)
+
+    res_body = req_body
+    res_body['itemRateList'] = item_rate_list.tolist()
+
     return jsonify(res_body)
 
 if __name__ == "__main__":
