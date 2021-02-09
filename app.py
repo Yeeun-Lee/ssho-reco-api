@@ -10,6 +10,7 @@ import math
 from features.translation import transItem
 from models._MF import MF
 from features.kerasEncoder import imgToVec
+import requests
 
 # Flask Endpoint 설정
 app = Flask(__name__)
@@ -50,6 +51,7 @@ def get_reco_item_mf():
 
 @app.route("/feature/title/translation", methods=['POST'])
 def get_title_translation():
+    print(request.base_url)
     req_body = request.get_json()
     res_body = {
         "engTitle": transItem(req_body['title'])
@@ -59,6 +61,7 @@ def get_title_translation():
 @app.route("/feature/image", methods=['POST'])
 def get_image_feature():
     req_body = request.get_json()
+    print(req_body)
     res_body = {
         "imageVec": imgToVec(req_body['imageUrl'])
     }
@@ -66,4 +69,6 @@ def get_image_feature():
 
 if __name__ == "__main__":
     # Run Flask Server
-    app.run(host=flask_host, port=flask_port)
+    app.run(host=flask_host, port=flask_port, debug=True)
+    # resp = requests.get("http://api.ssho.tech:8080/item/imageVec/test")
+    # print(resp.json())
