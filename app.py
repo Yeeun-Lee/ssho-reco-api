@@ -11,7 +11,7 @@ from features.distance import centroidVec, cos_sim
 from features.translation import transItem
 from models._MF import MF
 from features.kerasEncoder import imgToVec
-import requests
+
 
 # Flask Endpoint 설정
 app = Flask(__name__)
@@ -19,6 +19,9 @@ app.config['JSON_AS_ASCII'] = False
 
 flask_host = "0.0.0.0"
 flask_port = "5000"
+
+
+
 
 @app.route("/reco/mf", methods=['POST'])
 def get_reco_item_mf():
@@ -59,13 +62,20 @@ def get_title_translation():
     }
     return jsonify(res_body)
 
-@app.route("/feature/image", methods=['POST'])
+@app.route("/feature/image", methods=['POST', 'GET'])
 def get_image_feature():
     req_body = request.get_json()
-    print(req_body)
     res_body = {
         "imageVec": imgToVec(req_body['imageUrl'])
     }
+    # res_body = []
+    # for d in req_body:
+    #     res_body.append({
+    #         "id": d['id'],
+    #         "mallNm": d['mallNm'],
+    #         'imageUrl':d['imageUrl'],
+    #         'imageVev':imgToVec(d['imageUrl'])
+    #     })
     return jsonify(res_body)
 
 @app.route("/feature/distance", methods=['POST'])
@@ -90,6 +100,4 @@ def get_feature_distance():
 
 if __name__ == "__main__":
     # Run Flask Server
-    app.run(host=flask_host, port=flask_port, debug=True)
-    # resp = requests.get("http://api.ssho.tech:8080/item/imageVec/test")
-    # print(resp.json())
+    app.run(host=flask_host, port=flask_port)

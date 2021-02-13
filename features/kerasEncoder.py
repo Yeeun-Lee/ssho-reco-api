@@ -2,6 +2,7 @@ import numpy as np
 from PIL import Image
 import cv2
 from urllib.request import urlopen
+import requests
 from io import BytesIO
 
 from tensorflow.keras.layers import Dense, Conv2D, MaxPool2D, Input
@@ -10,7 +11,6 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
 
 from itertools import chain
-
 
 IMG_SIZE = 128
 
@@ -24,9 +24,6 @@ IMG_SIZE = 128
 
 def convertImg(url):
     img = Image.open(urlopen(url))
-    if img.is_animated:
-        img.seek(img.tell()+0) # 사용할 대표 이미지의 인덱스
-    img.show()
     return np.array(img.convert("RGB"))
 
 def processImg(url):
@@ -58,15 +55,19 @@ def Encoder():
 
     return img_out, encoder
 
+# 함수 바깥에서 Encoder 정의(반복적 재정의 방지, tensorflow Warning)
+encoded_img, encoder = Encoder()
+
 def imgToVec(url):
     img = processImg(url)
     img = np.expand_dims(img, axis = 0)
-    print(img.shape)
-    _, encoder = Encoder()
-
     return list(chain.from_iterable(encoder.predict(img/255).tolist()))
 
 if __name__=="__main__":
     # sample image url(imageUrl)
-    vec = imgToVec('https://www.stylenanda.com/web/product/tiny/20200413/3342a9562d07513347ddc4ac7ed9fd7d.webp')
-    print(vec)
+    url = "http://api.ssho.tech:8080/item/imageVec/test"
+    data = requests.get(url).json()
+    for d in data:
+        print(d['imageUrl'], end = ":")
+        v = imgToVec(d['imageUrl'])
+        print(v)
