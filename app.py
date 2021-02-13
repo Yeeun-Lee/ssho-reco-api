@@ -68,7 +68,7 @@ def get_title_translation():
     }
     return jsonify(res_body)
 
-@app.route("/feature/image", methods=['POST', 'GET'])
+@app.route("/feature/image", methods=['POST'])
 def get_image_feature():
     req_body = request.get_json()
     res_body = {
