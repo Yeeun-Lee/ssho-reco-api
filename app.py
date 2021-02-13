@@ -27,7 +27,7 @@ flask_port = "5000"
 def get_reco_item_mf():
     req_body = request.get_json()
     res_body = []
-    mall_no_list = req_body['mallNoList']
+    mall_list = req_body['mallList']
     user_swipe_score_list = req_body['userSwipeScoreList']
 
     dict_rate = {}
@@ -43,10 +43,16 @@ def get_reco_item_mf():
     factorizer.print_results()
     for key, rates in factorizer.estimated():
         sorted_idx = np.argsort(-rates)
+        mall_list = [mall_list[x] for x in sorted_idx]
+        mall_rate_list = [0.0 if math.isnan(i) else i for i in rates.tolist()]
+        user_mall_list = []
+        for i in range(len(mall_list)):
+            user_mall = {'mall': mall_list[i], 'rate': mall_rate_list[i]}
+            user_mall_list.append(user_mall)
+
         user_item = {
             "userId": str(key),
-            "mallNoList": [mall_no_list[x] for x in sorted_idx],
-            "mallRateList": [0.0 if math.isnan(i) else i for i in rates.tolist()]
+            "userMallList": user_mall_list
         }
         res_body.append(user_item)
 
@@ -82,19 +88,23 @@ def get_image_feature():
 def get_feature_distance():
     req_body = request.get_json()
     recent_item_image_vec_list = list(map(lambda x: x['imageVec'], req_body['recentItemList']))
-    item_list = req_body['itemList']
+    user_item_list = req_body['userItemList']
     represent_vec = centroidVec(recent_item_image_vec_list)
 
-    item_rate_list = []
-    for item in item_list:
+    for user_item in user_item_list:
+        item = user_item['item']
         item_image_vec = item['imageVec']
-        similarity = cos_sim(item_image_vec, represent_vec)
-        item_rate_list.append(similarity)
+        user_item['rate'] = cos_sim(item_image_vec, represent_vec)
 
-    item_rate_list = np.nan_to_num(item_rate_list)
+    item_rate_list = list(map(lambda i: i['rate'], user_item_list))
+    for i in range(len(user_item_list)):
+        if math.isnan(item_rate_list[i]):
+            user_item_list[i]['rate'] = 0.0
+        else:
+            user_item_list[i]['rate'] = item_rate_list[i]
 
     res_body = req_body
-    res_body['itemRateList'] = item_rate_list.tolist()
+    res_body['userItemList'] = user_item_list
 
     return jsonify(res_body)
 
